@@ -65,14 +65,35 @@ public class ShiritoriServlet extends HttpServlet {
 		//リクエストパラメータの取得
 		request.setCharacterEncoding("UTF-8");
 		String word=request.getParameter("word");
+		//スペースが含まれていた場合削除
+		word = word.replaceAll("[\\s　]", "");
+
 		
 		//セッションスコープから既に使われたワードの一覧（配列）を取得
 		HttpSession session = request.getSession();
 	    List<String> list = (List<String>) session.getAttribute("list");
 	    
-	    //プレイヤーの入力した単語の語尾に「ん」がついていれば専用のjspにフォワード
+		//wordが空あるいは「ー」だった場合の処理
+		if(word == null || word.length()==0 || word.equals("ー")) {
+	    	String errormsg ="<br><font color=\"red\">*不正な文字が入力、または空の文字が入力されたました。</font>";
+    		session.setAttribute("errormsg", errormsg);
+    		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
+    		dispatcher.forward(request, response);
+    		return;
+	    }
+		
+		//ーーが含まれていた場合警告してフォワード
+		String searchWord = "ーー";
+		int index = word.indexOf(searchWord);
+	    if (index != -1) {
+	        String errormsg ="<br><font color=\"red\">不正な文字列「 " + searchWord + "」 が見つかりました。</font>";
+	        session.setAttribute("errormsg", errormsg);
+    		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
+    		dispatcher.forward(request, response);
+    		return;
+	    }
+	    
 	    //フォームから入力された単語の頭文字と直前にlistに入った単語の尻の文字を比較。正しくなければフォワード
-	   
 	    if(list.size() !=0 ) {
 	    	int i = list.size()-1;
 		    WordLogic kasira = new WordLogic(word);
@@ -93,11 +114,10 @@ public class ShiritoriServlet extends HttpServlet {
 		    		//フォワード
 		    		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
 		    		dispatcher.forward(request, response);
-		    		
-		    	    return;
+		    		return;
 		    	}
 		    }
-		    
+		    //プレイヤーの入力した単語の語尾に「ん」がついていれば専用のjspにフォワード
 			if(kasira.getShiri().equals("ん")) {
 				String result = "コンピュータの勝ち";
 				request.setAttribute("result", result);
@@ -117,8 +137,7 @@ public class ShiritoriServlet extends HttpServlet {
 		    		//フォワード
 		    		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
 		    		dispatcher.forward(request, response);
-		    		
-		    	    return;
+		    		return;
 	    		}
 		    }
 	    

@@ -10,7 +10,7 @@ public class WordLogic {
 		this.shiri=word.substring(word.length()-1);
 		this.initial=word.substring(0,1);
 		switch(this.shiri) {
-		case "ー" : shiri = word.substring(word.length()-1);
+		case "ー" : shiri = word.substring(word.length() - 2, word.length() - 1); break;
 		case "が" : shiri = "か"; break;
 		case "ぎ" : shiri = "き"; break;
 		case "ぐ" : shiri = "く"; break;
@@ -45,6 +45,8 @@ public class WordLogic {
 		case "ゅ" : shiri = "ゆ"; break;
 		case "ょ" : shiri = "よ"; break;
 		case "を" : shiri = "お"; break;
+		case "っ" : shiri = "つ"; break;
+		case "ゑ" : shiri = "え"; break;
 		}
 		switch(this.initial) {
 		case "が" : initial = "か"; break;
@@ -81,6 +83,9 @@ public class WordLogic {
 		case "ゅ" : initial = "ゆ"; break;
 		case "ょ" : initial = "よ"; break;
 		case "を" : initial = "お"; break;
+		case "っ" : initial = "つ"; break;
+		case "ゑ" : initial = "う"; break;
+		
 		}
 	}
 	public String getWord() {return word;}
