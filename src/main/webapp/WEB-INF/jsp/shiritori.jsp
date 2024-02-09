@@ -16,7 +16,7 @@ String msg;
 int i = list.size()-1;
 if(list.size()!=0){
 	msg= list.get(i);
-}else{msg = "何か入力してね";}
+}else{msg = "　　　　　";}
 %>
 
 <!DOCTYPE html>
@@ -30,17 +30,23 @@ if(list.size()!=0){
 </head>
 <body class="box bg_dot is-small">
 	<h1>しりとりげーむ</h1>
-	<% for(String lists:list){ %>
-	<%=lists+"→" %>
-	<%} %>
-	<p class="margintop"><%= msg + errormsg %></p>
-
+	
+	<div class="box26">
+        <span class="box-title">Word</span>
+		<p><%= msg + errormsg %></p>
+	</div>
 	<div>
 		<form action="ShiritoriServlet" method = "post">
 			<input class="form-control" type = "text" name="word"><br>
 			<input type = "submit" value="送信">
 		</form>	
 	</div>
+	<div class="box2">
+        <% for(String lists:list){ %>
+		<%=lists + "→" %>
+		<%} %>
+		
+    </div>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>

@@ -73,6 +73,18 @@ public class ShiritoriServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 	    List<String> list = (List<String>) session.getAttribute("list");
 	    
+	  //プレイヤーの入力した単語の語尾に「ん」がついていれば専用のjspにフォワード
+	  	if(word.substring(word.length()-1).equals("ん")) {
+	  		System.out.println("んがつきました。");
+	  		String result = "<font color=\"red\">コンピュータの勝ち!!!</font>";
+	  		request.setAttribute("result", result);
+	  		list.add(word);
+	  		session.setAttribute("list", list);	
+	  		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritoriResult.jsp");
+	      	dispatcher.forward(request, response);
+	      	return;
+	  	}
+	    
 		//wordが空あるいは「ー」だった場合の処理
 		if(word == null || word.length()==0 || word.equals("ー")) {
 	    	String errormsg ="<br><font color=\"red\">*不正な文字が入力、または空の文字が入力されたました。</font>";
@@ -117,14 +129,7 @@ public class ShiritoriServlet extends HttpServlet {
 		    		return;
 		    	}
 		    }
-		    //プレイヤーの入力した単語の語尾に「ん」がついていれば専用のjspにフォワード
-			if(kasira.getShiri().equals("ん")) {
-				String result = "コンピュータの勝ち";
-				request.setAttribute("result", result);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritoriResult.jsp");
-	    		dispatcher.forward(request, response);
-	    		return;
-			}
+		    
 			
 			
 	    		if(kasira.getInitial().equals(siri.getShiri())) {
@@ -140,8 +145,6 @@ public class ShiritoriServlet extends HttpServlet {
 		    		return;
 	    		}
 		    }
-	    
-	    
 	    
 //	    System.out.println(list.size());
 	    String errormsg = "";
@@ -173,8 +176,11 @@ public class ShiritoriServlet extends HttpServlet {
         
         //コンピュータ側の答えた単語の語尾に「ん」がついていれば専用のjspにフォワード
         if(wordcheck.substring(wordcheck.length()-1).equals("ん")) {
-			String result = "あなたの勝ち";
+        	System.out.println("んがつきました。");
+			String result = "<font color=\\\"red\\\">あなたの勝ち!!!</font>";
 			request.setAttribute("result", result);
+			list.add(wordcheck);
+			session.setAttribute("list", list);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritoriResult.jsp");
     		dispatcher.forward(request, response);
     		return;

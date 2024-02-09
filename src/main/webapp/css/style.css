@@ -1,28 +1,30 @@
 @charset "UTF-8";
+
 h1 {
+    background-color: #fff;
+    font-family: fantasy;
+    color: #888;
+    font-size: 300%;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-body{
-    height: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
+/* body{
+    text-align: center;
+} */
 
 .margintop{
-    margin-top: 10%;
+    margin-top: 100px;
+    text-align: center;
 }
 
 /*ドット背景*/
 .box{
     width:100%;
     height:200px;
+    
   }
 .bg_dot{
     background-color: #fff;
@@ -35,3 +37,97 @@ body{
     background-image:
       radial-gradient(#888 10%, transparent 10%);
   }
+
+  .box2 {
+    padding: 5px;
+    margin: 50px auto;
+    width:50%;
+    height: 200px;
+    font-weight: bold;
+    color: #6091d3;/*文字色*/
+    background: #FFF;
+    border: solid 3px #6091d3;/*線*/
+    border-radius: 10px;/*角の丸み*/
+    overflow:auto;
+}
+.infobox {
+    height: 6.3em;     /* 高さを制限(※) */
+    overflow: scroll;  /* スクロールバーを表示(※) */
+    border: red 1px dashed;    /* 枠線を追加 */
+    background-color: #fff0f0; /* 背景色を追加 */
+ }
+  
+.box2 p {
+    margin: 0; 
+    padding: 0;
+}
+
+.inner{
+    display: inline-block;
+    text-align: left;
+}
+
+.widecenter{
+    justify-content: center;
+}
+
+.box26 {
+    position: relative;
+    margin: 100px auto;
+    margin-bottom: 30px;
+    padding: 0.5px 1px;
+    border: solid 3px #6091d3;
+    border-radius: 8px;
+    background-color: #FFF;
+    width: 20%;
+    height: auto;
+    text-align: center;
+    font-size: 20px;
+}
+.box26 .box-title {
+    position: absolute;
+    display: inline-block;
+    top: -13px;
+    left: 5px;
+    padding: 0 9px;
+    line-height: 1;
+    font-size: 19px;
+    background: #FFF;
+    color: #6091d3;
+    font-weight: bold;
+    width: auto;
+}
+.box26 p {
+    margin: 0; 
+    padding: 0;
+}
+
+.button {
+    display       : inline-block;
+    border-radius : 20%;          /* 角丸       */
+    font-size     : 12pt;        /* 文字サイズ */
+    text-align    : center;      /* 文字位置   */
+    cursor        : pointer;     /* カーソル   */
+    padding       : 7px 7px;   /* 余白       */
+    background    : #6091d3;     /* 背景色     */
+    color         : #ffffff;     /* 文字色     */
+    line-height   : 1em;         /* 1行の高さ  */
+    transition    : .3s;         /* なめらか変化 */
+    /* box-shadow    : 6px 6px 3px #666666;  影の設定 */
+    border        : 2px solid #6091d3;    /* 枠の指定 */
+  }
+  .button:hover {
+    box-shadow    : none;        /* カーソル時の影消去 */
+    color         : #6091d3;     /* 背景色     */
+    background    : #ffffff;     /* 文字色     */
+  }
+
+form{
+    text-align: center;
+}
+
+.center{
+	text-align: center;
+	font-weight: bold;
+    font-size: 20px;
+}
