@@ -11,6 +11,8 @@ h1 {
     transform: translate(-50%, -50%);
 }
 
+
+
 /* body{
     text-align: center;
 } */
@@ -122,12 +124,18 @@ h1 {
     background    : #ffffff;     /* 文字色     */
   }
 
-form{
-    text-align: center;
-}
+
 
 .center{
 	text-align: center;
 	font-weight: bold;
     font-size: 20px;
+}
+
+.parent {
+ float: left;
+}
+ 
+.child {
+ text-align: center;
 }

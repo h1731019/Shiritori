@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.RankingDAO;
 import model.AnswerWord;
+import model.Score;
 import model.WordLogic;
 import model.WordSerchLogic;
 
@@ -53,6 +55,14 @@ public class ShiritoriServlet extends HttpServlet {
         AnswerWord answerword = new AnswerWord(wordcheck); 
         //セッションスコープに保存
         session.setAttribute("answerword",answerword);
+        
+        String userId="ゲスト";
+		//ランキングの取得
+		RankingDAO rankingdao = new RankingDAO();
+		List<Score> rankinglist = rankingdao.findRanking();
+		session.setAttribute("rankinglist", rankinglist);
+		
+		session.setAttribute("userId",userId);
 	    
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
 		dispatcher.forward(request, response);
