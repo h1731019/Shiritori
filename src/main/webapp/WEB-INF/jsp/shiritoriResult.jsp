@@ -4,9 +4,10 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 
+<% String userId =(String)session.getAttribute("userId") ; %>
 <% AnswerWord a = (AnswerWord)session.getAttribute("answerword");
 List<String> list = (List<String>)session.getAttribute("list");
-String errormsg =(String)session.getAttribute("errormsg") ;
+String errormsg =(String)request.getAttribute("errormsg") ;
 if(errormsg == null){
 	errormsg = "";
 }else{
@@ -19,6 +20,12 @@ if(list.size()!=0){
 }else{msg = "　　　　　";}
 %>
 <%String result = (String)request.getAttribute("result"); %>
+<%String rankingCheck = (String)request.getAttribute("rankingCheck"); %>
+<% if(userId.equals("ゲスト")||userId.length()==0||userId==null){
+		rankingCheck="";
+}
+	%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,10 +34,14 @@ if(list.size()!=0){
 <title>しりとり結果</title>
 </head>
 <body class="box bg_dot is-small">
+<p>現在のステータス：<%=userId %></p>
+<br><a href = "ShiritoriServlet"></a>
 	<div class="box26">
         <span class="box-title">Word</span>
 		<p><%= msg + errormsg %></p>
+		<p><%=rankingCheck %></p>
 	</div>
+<p><%=list.size() %>手で決着
 	
 <p class="center"><%= result %></p>
 

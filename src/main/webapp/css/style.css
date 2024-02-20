@@ -85,6 +85,7 @@ h1 {
     height: auto;
     text-align: center;
     font-size: 20px;
+    color: #6091d3;
 }
 .box26 .box-title {
     position: absolute;
@@ -137,5 +138,8 @@ h1 {
 }
  
 .child {
- text-align: center;
+ text-align: left;
+}
+.smallfont{
+	font-size:14px;
 }

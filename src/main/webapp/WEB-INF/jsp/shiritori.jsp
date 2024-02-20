@@ -14,17 +14,25 @@ if(loginErrormsg == null){
 }; %>
 <% AnswerWord a = (AnswerWord)session.getAttribute("answerword");
 List<String> list = (List<String>)session.getAttribute("list");
-String errormsg =(String)session.getAttribute("errormsg") ;
-if(errormsg == null){
+String errormsg =(String)request.getAttribute("errormsg") ;
+if(errormsg == null||errormsg.length()==0||errormsg.equals("")){
 	errormsg = "";
-}else{
-	errormsg=(String)session.getAttribute("errormsg");
 }
-String msg;
+String msg="";
 int i = list.size()-1;
 if(list.size()!=0){
 	msg= list.get(i);
+	if(list.get(i).equals("")||list.get(i)==null){
+	msg= "";}
 }else{msg = "　　　　　";}
+System.out.println(list.get(i));
+%>
+<%String logincheck="";
+if(userId.equals("ゲスト")){
+	logincheck = "<div class=\"parent\"><div class =\"child\"><form action=\"LoginServlet\" method = \"post\"><label class=\"smallfont\" style=\"background-color: white;\">ユーザーID：<br><input type = \"text\" name=\"userId\"></label><br><label class=\"smallfont\" style=\"background-color: white;\">パスワード：<br><input type = \"password\" name=\"pass\"></label><br><input type = \"submit\" value=\"送信\"></form></div><a href =\"NewAccountServlet\">ユーザー登録はこちら</a></div>";
+}else{
+	logincheck = "<a href=\"ShiritoriServlet?action=logout\">ログアウト</a>";
+}
 %>
 
 <!DOCTYPE html>
@@ -41,18 +49,19 @@ if(list.size()!=0){
 	
 	<div >現在のステータス：<%= userId %></div>
 	<br><%=loginErrormsg %><br>
-	<div class="parent">
-	<div class ="child">
-	<form action="LoginServlet" method = "post">
-			<label style="background-color: white;">ユーザーID：<input type = "text" name="userId"></label><br>
-			<label style="background-color: white;">パスワード：<input type = "password" name="pass"></label><br>
-			<input type = "submit" value="送信">
-	</form>	
+	<%=logincheck %>
+	
+	<div align ="center">
+	<p>ルール</p>
+	・入力はひらがなのみです。<br>
+	・単語の終わりが濁点や半濁点を持つ文字（例：「ば」「ぱ」）の場合、次の単語の頭文字は「は」「ば」「ぱ」で始まる単語のみ許可されます。<br>
+	・単語の終わりが「ー」（伸ばし棒）の場合、その一つ前の文字が判定の基準となります。<br>
+	・単語の終わりが「ゃ」や「ぁ」の場合、それぞれ「や」「あ」として判定されます。<br>
 	</div>
-	</div>
+	
 	<div class="box26">
         <span class="box-title">Word</span>
-		<p><%= msg + errormsg %></p>
+		<p><%= msg%><%=errormsg %></p>
 	</div>
 	<div>
 		<form align="center" action="ShiritoriServlet" method = "post">

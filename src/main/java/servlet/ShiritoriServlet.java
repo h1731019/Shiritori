@@ -1,5 +1,5 @@
 package servlet;
-
+	
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,8 @@ public class ShiritoriServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		request.setCharacterEncoding("UTF-8");
+		String action = request.getParameter("action");
 		//空のwordcheck
 		String wordcheck = "";
 		//セッションスコープを取得
@@ -50,20 +51,28 @@ public class ShiritoriServlet extends HttpServlet {
 		    
 		    session.setAttribute("list",list);
 		}
-
+		
 		//checkwordをインスタンスに保存
         AnswerWord answerword = new AnswerWord(wordcheck); 
         //セッションスコープに保存
         session.setAttribute("answerword",answerword);
         
-        String userId="ゲスト";
+        //userIdの取得
+        String userId =(String)session.getAttribute("userId");
+        if(userId==null||userId.length()==0||userId.equals("")) {
+        	userId="ゲスト";
+        }
 		//ランキングの取得
 		RankingDAO rankingdao = new RankingDAO();
 		List<Score> rankinglist = rankingdao.findRanking();
 		session.setAttribute("rankinglist", rankinglist);
 		
+		//ログアウトボタンを押された時の処理
+		if(action !=null && action.equals("logout")) {
+			userId="ゲスト";
+		}
 		session.setAttribute("userId",userId);
-	    
+			    
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -83,6 +92,16 @@ public class ShiritoriServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 	    List<String> list = (List<String>) session.getAttribute("list");
 	    
+	  //wordが空あるいは「ー」だった場合の処理
+	  	if(word == null || word.length()==0 || word.equals("ー")) {
+	  		System.out.println("空の文字");
+	  	    String errormsg ="<br><font color=\"red\">*不正な文字が入力、または空の文字が入力されたました。</font>";
+	      	request.setAttribute("errormsg", errormsg);
+	      	RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
+	      	dispatcher.forward(request, response);
+	      	return;
+	  	 }
+	    
 	  //プレイヤーの入力した単語の語尾に「ん」がついていれば専用のjspにフォワード
 	  	if(word.substring(word.length()-1).equals("ん")) {
 	  		System.out.println("んがつきました。");
@@ -95,21 +114,14 @@ public class ShiritoriServlet extends HttpServlet {
 	      	return;
 	  	}
 	    
-		//wordが空あるいは「ー」だった場合の処理
-		if(word == null || word.length()==0 || word.equals("ー")) {
-	    	String errormsg ="<br><font color=\"red\">*不正な文字が入力、または空の文字が入力されたました。</font>";
-    		session.setAttribute("errormsg", errormsg);
-    		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
-    		dispatcher.forward(request, response);
-    		return;
-	    }
+		
 		
 		//ーーが含まれていた場合警告してフォワード
 		String searchWord = "ーー";
 		int index = word.indexOf(searchWord);
 	    if (index != -1) {
 	        String errormsg ="<br><font color=\"red\">不正な文字列「 " + searchWord + "」 が見つかりました。</font>";
-	        session.setAttribute("errormsg", errormsg);
+	        request.setAttribute("errormsg", errormsg);
     		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
     		dispatcher.forward(request, response);
     		return;
@@ -131,7 +143,7 @@ public class ShiritoriServlet extends HttpServlet {
 		    for(String lists:list) {
 		    	if(lists.equals(word)) {
 		    		String errormsg = "<br><font color=\"red\">*すでに使われている単語です</font>";
-		    		session.setAttribute("errormsg", errormsg);
+		    		request.setAttribute("errormsg", errormsg);
 		    		
 		    		//フォワード
 		    		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
@@ -147,7 +159,7 @@ public class ShiritoriServlet extends HttpServlet {
 	    		}else {
 //	    			System.out.println("違います");
 		    		String errormsg ="<br><font color=\"red\">*頭文字が正しくありません</font>";
-		    		session.setAttribute("errormsg", errormsg);
+		    		request.setAttribute("errormsg", errormsg);
 	
 		    		//フォワード
 		    		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritori.jsp");
@@ -187,10 +199,12 @@ public class ShiritoriServlet extends HttpServlet {
         //コンピュータ側の答えた単語の語尾に「ん」がついていれば専用のjspにフォワード
         if(wordcheck.substring(wordcheck.length()-1).equals("ん")) {
         	System.out.println("んがつきました。");
-			String result = "<font color=\\\"red\\\">あなたの勝ち!!!</font>";
+			String result = "<font color=\"red\">あなたの勝ち!!!</font>";
 			request.setAttribute("result", result);
 			list.add(wordcheck);
 			session.setAttribute("list", list);
+			String rankingCheck = "<a href = \"NewRankingServlet\">ランキングに登録する</a>"; 
+			request.setAttribute("rankingCheck", rankingCheck);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/shiritoriResult.jsp");
     		dispatcher.forward(request, response);
     		return;
