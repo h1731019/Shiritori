@@ -143,3 +143,94 @@ h1 {
 .smallfont{
 	font-size:14px;
 }
+
+.board-container {
+    position: fixed;
+    top: 60px; /* ボタンの高さ分を追加 */
+    right: 20px;
+    width: 300px;
+    height: 300px;
+    overflow: auto;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.message {
+    margin-bottom: 10px;
+}
+
+.collapsible-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 1; /* 重なり順を指定 */
+}
+
+/*.post-form {*/
+/*    display: none;  初期状態では非表示 */
+/*}*/
+
+.post-form input[type="text"],
+.post-form textarea,
+.post-form input[type="submit"] {
+    display: block;
+    margin-bottom: 10px;
+    width: calc(100% - 20px);
+    padding: 5px;
+}
+
+.post-form input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: white;
+    margin-bottom: 3px;
+}
+
+/* ハンバーガーマークの間隔を調整するためのスタイル */
+.bar:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.box25{
+    position: relative;
+    background:gray;
+    box-shadow: gray;
+    border: dashed 2px white;
+    padding: 0.2em 0.5em;
+    color: #454545;
+    width: 50%;
+}
+.box25:after{
+    position: absolute;
+    content: '';
+    right: -7px;
+    top: -7px;
+    border-width: 0 15px 15px 0;
+    border-style: solid;
+    border-color: gray rgb(255, 255, 255) rgb(128, 128, 128)	;
+    box-shadow: -1px 1px 1px rgb(128, 128, 128);
+    
+}
+.box25 p {
+    margin: 0; 
+    padding: 0;
+}

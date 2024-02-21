@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="model.AnswerWord" %>
-<%@ page import="java.util.List" %>
+<%@ page import="model.Mutter , java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="model.Score" %>
 
@@ -25,13 +25,19 @@ if(list.size()!=0){
 	if(list.get(i).equals("")||list.get(i)==null){
 	msg= "";}
 }else{msg = "　　　　　";}
-System.out.println(list.get(i));
 %>
 <%String logincheck="";
 if(userId.equals("ゲスト")){
 	logincheck = "<div class=\"parent\"><div class =\"child\"><form action=\"LoginServlet\" method = \"post\"><label class=\"smallfont\" style=\"background-color: white;\">ユーザーID：<br><input type = \"text\" name=\"userId\"></label><br><label class=\"smallfont\" style=\"background-color: white;\">パスワード：<br><input type = \"password\" name=\"pass\"></label><br><input type = \"submit\" value=\"送信\"></form></div><a href =\"NewAccountServlet\">ユーザー登録はこちら</a></div>";
 }else{
 	logincheck = "<a href=\"ShiritoriServlet?action=logout\">ログアウト</a>";
+}
+
+List<Mutter> mutterList = (List<Mutter>)session.getAttribute("mutterList");
+//リクエストスコープに保存されたエラーメッセージを取得
+String errorMsg = (String)request.getAttribute("errorMsg");
+if(errorMsg==null||errorMsg.length()==0||errorMsg.equals("")){
+	errorMsg = "";
 }
 %>
 
@@ -41,6 +47,7 @@ if(userId.equals("ゲスト")){
 	<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/style.css">
 	<script type="text/javascript" src="https://github.com/niwaringo/moji/releases/download/V1.2.0/moji.js"></script>
 	<script type="text/javascript" src="./input-validate.js"></script>
+	<script type="text/javascript" src="./oritatami.js"></script>
 <meta charset="UTF-8">
 <title>しりとり</title>
 </head>
@@ -50,6 +57,7 @@ if(userId.equals("ゲスト")){
 	<div >現在のステータス：<%= userId %></div>
 	<br><%=loginErrormsg %><br>
 	<%=logincheck %>
+	
 	
 	<div align ="center">
 	<p>ルール</p>
@@ -105,6 +113,29 @@ if(userId.equals("ゲスト")){
 	</tr>
 	
 	</table>
+	
+	<button id="toggle-button" class="collapsible-btn" onclick="toggleBoard()">
+		<span class="bar"></span>
+    	<span class="bar"></span>
+    	<span class="bar"></span>
+    </button>
+	<div class="board-container" id="board-container">
+		<form action = "ShiritoriKeijibanServlet" method = "post" id="post-form" class="post-form" onsubmit="submitForm(event)">
+        	<textarea name="text" placeholder="投稿内容"></textarea>
+        	<input type="submit" value="投稿">
+    	</form>
+    	<%=errorMsg %>
+    <div id="mutter-list">
+        <% for (Mutter mutter : mutterList){ %>
+            <div class="message">
+                <%= mutter.getId()%>. <%= mutter.getUserName() %>: <%= mutter.getTimestamp() %><br><%= mutter.getText() %>
+            </div>
+        <% } %>
+    </div>
+    
+	</div>
+
+<script src="./oritatami.js"></script>
 	
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>

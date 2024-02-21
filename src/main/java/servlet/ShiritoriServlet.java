@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import dao.RankingDAO;
 import model.AnswerWord;
+import model.GetMutterListLogic;
+import model.Mutter;
 import model.Score;
 import model.WordLogic;
 import model.WordSerchLogic;
@@ -38,11 +40,18 @@ public class ShiritoriServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		
+		//つぶやきリストを取得してリクエストスコープに保存
+		GetMutterListLogic getMutterListLogic = new GetMutterListLogic();
+		List<Mutter> mutterList = getMutterListLogic.execute();
+		session.setAttribute("mutterList", mutterList);
+		
 		String action = request.getParameter("action");
 		//空のwordcheck
 		String wordcheck = "";
 		//セッションスコープを取得
-		HttpSession session = request.getSession();
+		
 		if(request.getAttribute("list") == null) {
 			// リストの生成
 		    List<String> list = new ArrayList<>();
