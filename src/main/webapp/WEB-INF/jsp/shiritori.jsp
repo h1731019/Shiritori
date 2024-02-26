@@ -28,9 +28,9 @@ if(list.size()!=0){
 %>
 <%String logincheck="";
 if(userId.equals("ゲスト")){
-	logincheck = "<div class=\"parent\"><div class =\"child\"><form action=\"LoginServlet\" method = \"post\"><label class=\"smallfont\" style=\"background-color: white;\">ユーザーID：<br><input type = \"text\" name=\"userId\"></label><br><label class=\"smallfont\" style=\"background-color: white;\">パスワード：<br><input type = \"password\" name=\"pass\"></label><br><input type = \"submit\" value=\"送信\"></form></div><a href =\"NewAccountServlet\">ユーザー登録はこちら</a></div>";
+	logincheck = "<form action=\"LoginServlet\" method = \"post\"><label class=\"smallfont\" style=\"background-color: white;\">ユーザーID：<br><input type = \"text\" name=\"userId\"></label><br><label class=\"smallfont\" style=\"background-color: white;\">パスワード：<br><input type = \"password\" name=\"pass\"></label><br><input type = \"submit\" value=\"送信\"></form><a href =\"NewAccountServlet\">ユーザー登録はこちら</a>";
 }else{
-	logincheck = "<a href=\"ShiritoriServlet?action=logout\">ログアウト</a>";
+	logincheck = "<a href=\"ShiritoriServlet?action=logout\">ログアウト</a>　　　　　　";
 }
 
 List<Mutter> mutterList = (List<Mutter>)session.getAttribute("mutterList");
@@ -54,18 +54,23 @@ if(errorMsg==null||errorMsg.length()==0||errorMsg.equals("")){
 <body class="box bg_dot is-small">
 	<h1>しりとりげーむ</h1>
 	
-	<div >現在のステータス：<%= userId %></div>
+	<div>現在のステータス：<%= userId %></div>
 	<br><%=loginErrormsg %><br>
-	<%=logincheck %>
 	
-	
-	<div align ="center">
-	<p>ルール</p>
-	・入力はひらがなのみです。<br>
-	・単語の終わりが濁点や半濁点を持つ文字（例：「ば」「ぱ」）の場合、次の単語の頭文字は「は」「ば」「ぱ」で始まる単語のみ許可されます。<br>
-	・単語の終わりが「ー」（伸ばし棒）の場合、その一つ前の文字が判定の基準となります。<br>
-	・単語の終わりが「ゃ」や「ぁ」の場合、それぞれ「や」「あ」として判定されます。<br>
-	</div>
+	<div class="container">
+		<div class="item"><%=logincheck %>
+		</div>
+		<div class="item-center">
+        		<div class="rule-box">
+            		<p>ルール</p>
+            		・入力はひらがなのみです。<br>
+            		・単語の終わりが濁点や半濁点を持つ文字（例：「ば」「ぱ」）の場合、次の単語の頭文字は「は」「ば」「ぱ」で始まる単語のみ許可されます。<br>
+            		・単語の終わりが「ー」（伸ばし棒）の場合、その一つ前の文字が判定の基準となります。<br>
+            		・単語の終わりが「ゃ」や「ぁ」の場合、それぞれ「や」「あ」として判定されます。<br>
+        		</div>
+    		
+    	</div>
+    </div>
 	
 	<div class="box26">
         <span class="box-title">Word</span>
@@ -111,6 +116,18 @@ if(errorMsg==null||errorMsg.length()==0||errorMsg.equals("")){
 		<td><%=rankinglist.get(2).getScore() %></td>
 		<td><%=rankinglist.get(2).getTimestamp() %></td>
 	</tr>
+	<tr>
+		<td>4位</td>
+		<td><%=rankinglist.get(3).getUserId() %></td>
+		<td><%=rankinglist.get(3).getScore() %></td>
+		<td><%=rankinglist.get(3).getTimestamp() %></td>
+	</tr>
+	<tr>
+		<td>5位</td>
+		<td><%=rankinglist.get(4).getUserId() %></td>
+		<td><%=rankinglist.get(4).getScore() %></td>
+		<td><%=rankinglist.get(4).getTimestamp() %></td>
+	</tr>
 	
 	</table>
 	
@@ -121,7 +138,7 @@ if(errorMsg==null||errorMsg.length()==0||errorMsg.equals("")){
     </button>
 	<div class="board-container" id="board-container">
 		<form action = "ShiritoriKeijibanServlet" method = "post" id="post-form" class="post-form" onsubmit="submitForm(event)">
-        	<textarea name="text" placeholder="投稿内容"></textarea>
+        	<textarea class="form-control" name="text" placeholder="投稿内容"></textarea>
         	<input type="submit" value="投稿">
     	</form>
     	<%=errorMsg %>
@@ -144,6 +161,13 @@ if(errorMsg==null||errorMsg.length()==0||errorMsg.equals("")){
     	var isComposing = false;
     	// ひらがなのみに変換(スペース含む)
     	$('[name="word"]').on('keyup blur compositionstart compositionend', function (event) {
+        convert_hiragana(this, event.type);
+    	});
+	</script>	
+	<script>
+    	var isComposing = false;
+    	// ひらがなのみに変換(スペース含む)
+    	$('[name="text"]').on('keyup blur compositionstart compositionend', function (event) {
         convert_hiragana(this, event.type);
     	});
 	</script>	

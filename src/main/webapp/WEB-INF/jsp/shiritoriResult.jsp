@@ -39,9 +39,10 @@ if(list.size()!=0){
 	<div class="box26">
         <span class="box-title">Word</span>
 		<p><%= msg + errormsg %></p>
-		<p><%=rankingCheck %></p>
+		
 	</div>
-<p><%=list.size() %>手で決着
+	<p style="text-align: center;"><%=rankingCheck %></p>
+<p class="center"><%=list.size() %>手で決着</p>
 	
 <p class="center"><%= result %></p>
 
@@ -51,6 +52,6 @@ if(list.size()!=0){
 		<%} %>
 		「ん」がついちゃった！
     </div>
-
+<a href ="ShiritoriServlet">もどる</a>
 </body>
 </html>

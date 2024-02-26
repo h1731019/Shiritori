@@ -29,7 +29,7 @@ public class RankingDAO {
 		try(Connection conn = DriverManager.getConnection(JBDC_URL, DB_USER, DB_PASS)){
 			
 			//SELECT文を準備
-			String sql = "SELECT * FROM SHIRITORIRANKING ORDER BY スコア LIMIT 3";
+			String sql = "SELECT * FROM SHIRITORIRANKING ORDER BY スコア LIMIT 5";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			
 			//SELECt文を実行し、結果票を取得
